@@ -1,0 +1,9 @@
+!.gitignore
+core
+exec/local_conf.json
+/Libraries/*
+/Project/EWARM/Debug/*
+/Project/EWARM/Release/*
+/Project/EWARM/settings/*
+
+
