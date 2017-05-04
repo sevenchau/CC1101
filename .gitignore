@@ -5,5 +5,6 @@ exec/local_conf.json
 /Project/EWARM/Debug/*
 /Project/EWARM/Release/*
 /Project/EWARM/settings/*
+/Project/EWARM/STM32F10x_Module.dep
 
 

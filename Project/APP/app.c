@@ -41,8 +41,8 @@
 static            OS_TCB       AppTaskStart_TCB;
 static            CPU_STK      AppTaskStart_Stk[APP_TASK_START_STK_SIZE];
 
-static	OS_TCB	LED1_TCB;		   					//定义任务控制块
-static	CPU_STK	LED1_Stk[TASK_LED1_STK_SIZE];		//定义任务堆栈
+static	OS_TCB	LED1_TCB;
+static	CPU_STK	LED1_Stk[TASK_LED1_STK_SIZE];
 /*
 *********************************************************************************************************
 *                                         FUNCTION PROTOTYPES
@@ -164,19 +164,19 @@ static  void  AppTaskStart (void *p_arg)
 static  void  AppTaskCreate (void)
 {
   OS_ERR      err;
-  OSTaskCreate((OS_TCB     *)&LED1_TCB,			//任务控制块指针          
-                 (CPU_CHAR   *)"LED1",				//任务名称
-                 (OS_TASK_PTR )Task_LED1, 	 			//任务代码指针
-                 (void       *)0,			 			//传递给任务的参数parg
-                 (OS_PRIO     )TASK_LED1_PRIO,		//任务优先级
-                 (CPU_STK    *)&LED1_Stk[0],	 		//任务堆栈基地址
-                 (CPU_STK_SIZE)TASK_LED1_STK_SIZE/10,//堆栈剩余警戒线
-                 (CPU_STK_SIZE)TASK_LED1_STK_SIZE,	//堆栈大小
-                 (OS_MSG_QTY  )0,			 			//可接收的最大消息队列数
-                 (OS_TICK     )0,			 			//时间片轮转时间
-                 (void       *)0,			 			//任务控制块扩展信息
-                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),	 //任务选项
-                 (OS_ERR     *)&err);		 			//返回值
+  OSTaskCreate((OS_TCB     *)&LED1_TCB,     
+                 (CPU_CHAR   *)"LED1",	
+                 (OS_TASK_PTR )Task_LED1, 
+                 (void       *)0,	
+                 (OS_PRIO     )TASK_LED1_PRIO,	
+                 (CPU_STK    *)&LED1_Stk[0],	
+                 (CPU_STK_SIZE)TASK_LED1_STK_SIZE/10,
+                 (CPU_STK_SIZE)TASK_LED1_STK_SIZE,
+                 (OS_MSG_QTY  )0,			 		
+                 (OS_TICK     )0,			 			
+                 (void       *)0,			 			
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),	
+                 (OS_ERR     *)&err);		 			
 				 
 }
 
