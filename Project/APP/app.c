@@ -69,28 +69,28 @@ static  void         Task_LED1          (void *p_arg);
 
 int  main (void)
 {
-    OS_ERR     err;
-
-
-    BSP_IntDisAll();                                            /* Disable all interrupts.                              */
-
-    OSInit(&err);                                               /* Init uC/OS-III.                                      */
-    
-    OSTaskCreate((OS_TCB     *)&AppTaskStart_TCB,               /* Create the start task                                */
-                 (CPU_CHAR   *)"Start",
-                 (OS_TASK_PTR )AppTaskStart,
-                 (void       *)0,
-                 (OS_PRIO     )APP_TASK_START_PRIO,
-                 (CPU_STK    *)&AppTaskStart_Stk[0],
-                 (CPU_STK_SIZE)APP_TASK_START_STK_SIZE / 10,
-                 (CPU_STK_SIZE)APP_TASK_START_STK_SIZE,
-                 (OS_MSG_QTY  )0,
-                 (OS_TICK     )0,
-                 (void       *)0,
-                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
-                 (OS_ERR     *)&err);
-
-    OSStart(&err);                                              /* Start multitasking (i.e. give control to uC/OS-III). */
+  OS_ERR     err;
+  
+  
+  BSP_IntDisAll();                                            /* Disable all interrupts.                              */
+  
+  OSInit(&err);                                               /* Init uC/OS-III.                                      */
+  
+  OSTaskCreate((OS_TCB     *)&AppTaskStart_TCB,               /* Create the start task                                */
+               (CPU_CHAR   *)"Start",
+               (OS_TASK_PTR )AppTaskStart,
+               (void       *)0,
+               (OS_PRIO     )APP_TASK_START_PRIO,
+               (CPU_STK    *)&AppTaskStart_Stk[0],
+               (CPU_STK_SIZE)APP_TASK_START_STK_SIZE / 10,
+               (CPU_STK_SIZE)APP_TASK_START_STK_SIZE,
+               (OS_MSG_QTY  )0,
+               (OS_TICK     )0,
+               (void       *)0,
+               (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+               (OS_ERR     *)&err);
+  
+  OSStart(&err);                                              /* Start multitasking (i.e. give control to uC/OS-III). */
 }
 
 
@@ -112,40 +112,40 @@ int  main (void)
 
 static  void  AppTaskStart (void *p_arg)
 {
-    CPU_INT32U   freq;
-    CPU_INT32U   cnts;
-    OS_ERR       err;
-
-
-   (void)p_arg;
-   
-    BSP_Init();                                                       /* Initialize BSP functions                          */
-    CPU_Init();                                                       /* Initialize the uC/CPU services                    */
-
-    freq = BSP_CPU_ClkFreq();                                         /* Determine SysTick reference freq.                 */                                                                        
-    cnts = freq / (CPU_INT32U)OSCfg_TickRate_Hz;                      /* Determine nbr SysTick increments                  */
-    OS_CPU_SysTickInit(cnts);                                         /* Init uC/OS periodic time src (SysTick).           */
-
+  CPU_INT32U   freq;
+  CPU_INT32U   cnts;
+  OS_ERR       err;
+  
+  
+  (void)p_arg;
+  
+  BSP_Init();                                                       /* Initialize BSP functions                          */
+  CPU_Init();                                                       /* Initialize the uC/CPU services                    */
+  
+  freq = BSP_CPU_ClkFreq();                                         /* Determine SysTick reference freq.                 */                                                                        
+  cnts = freq / (CPU_INT32U)OSCfg_TickRate_Hz;                      /* Determine nbr SysTick increments                  */
+  OS_CPU_SysTickInit(cnts);                                         /* Init uC/OS periodic time src (SysTick).           */
+  
 #if OS_CFG_STAT_TASK_EN > 0u
-    OSStatTaskCPUUsageInit(&err);                                     /* Compute CPU capacity with no task running         */
+  OSStatTaskCPUUsageInit(&err);                                     /* Compute CPU capacity with no task running         */
 #endif
-
+  
 #ifdef  CPU_CFG_INT_DIS_MEAS_EN
-    CPU_IntDisMeasMaxCurReset();
+  CPU_IntDisMeasMaxCurReset();
 #endif
-
-    AppEventCreate();                                                 /* Create Application Kernel objects                 */
-
-    AppTaskCreate();                                                  /* Create application tasks                          */
+  
+  AppEventCreate();                                                 /* Create Application Kernel objects                 */
+  
+  AppTaskCreate();                                                  /* Create application tasks                          */
+  
+  
+  while (DEF_TRUE) {                                                /* Task body, always written as an infinite loop.    */
     
+    OSTimeDlyHMSM(0, 0, 0, 200,                                   /* Delay task for 200 ms                             */
+                  OS_OPT_TIME_HMSM_STRICT,
+                  &err);
     
-    while (DEF_TRUE) {                                                /* Task body, always written as an infinite loop.    */
-		
-        OSTimeDlyHMSM(0, 0, 0, 200,                                   /* Delay task for 200 ms                             */
-                      OS_OPT_TIME_HMSM_STRICT,
-                      &err);
-        
-    }
+  }
 }
 
 
@@ -165,19 +165,19 @@ static  void  AppTaskCreate (void)
 {
   OS_ERR      err;
   OSTaskCreate((OS_TCB     *)&LED1_TCB,     
-                 (CPU_CHAR   *)"LED1",	
-                 (OS_TASK_PTR )Task_LED1, 
-                 (void       *)0,	
-                 (OS_PRIO     )TASK_LED1_PRIO,	
-                 (CPU_STK    *)&LED1_Stk[0],	
-                 (CPU_STK_SIZE)TASK_LED1_STK_SIZE/10,
-                 (CPU_STK_SIZE)TASK_LED1_STK_SIZE,
-                 (OS_MSG_QTY  )0,			 		
-                 (OS_TICK     )0,			 			
-                 (void       *)0,			 			
-                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),	
-                 (OS_ERR     *)&err);		 			
-				 
+               (CPU_CHAR   *)"LED1",	
+               (OS_TASK_PTR )Task_LED1, 
+               (void       *)0,	
+               (OS_PRIO     )TASK_LED1_PRIO,	
+               (CPU_STK    *)&LED1_Stk[0],	
+               (CPU_STK_SIZE)TASK_LED1_STK_SIZE/10,
+               (CPU_STK_SIZE)TASK_LED1_STK_SIZE,
+               (OS_MSG_QTY  )0,			 		
+               (OS_TICK     )0,			 			
+               (void       *)0,			 			
+               (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),	
+               (OS_ERR     *)&err);		 			
+  
 }
 
 
@@ -202,17 +202,23 @@ static void AppEventCreate(void)
 {
 }
 
-
+/*******************************************************************************
+  * @brief  Task_LED1():task for leds
+  * @param  void *p_arg
+  *         --
+  * @retval void:--
+  * Author: 2017/5/9, by Seven K. ZHOU
+*******************************************************************************/
 void Task_LED1(void *p_arg)
 {
-	OS_ERR err;
-    (void)p_arg;
-	
-    while (1)
-    {
-		LED0(ON);
-		OSTimeDlyHMSM(0, 0,0,500,OS_OPT_TIME_HMSM_STRICT,&err);
-		LED0(OFF);
-		OSTimeDlyHMSM(0, 0,0,500,OS_OPT_TIME_HMSM_STRICT,&err);
-    }
+  OS_ERR err;
+  (void)p_arg;
+  
+  while (1)
+  {
+    LED0(ON);
+    OSTimeDlyHMSM(0, 0,0,500,OS_OPT_TIME_HMSM_STRICT,&err);
+    LED0(OFF);
+    OSTimeDlyHMSM(0, 0,0,500,OS_OPT_TIME_HMSM_STRICT,&err);
+  }
 }
